@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +69,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         ToggleCard()
+                        KotlinPracticeScreen()
                     }
 
 
@@ -105,41 +108,35 @@ fun ToggleCard (modifier: Modifier = Modifier){
 }
 
 @Composable
-fun KotlinPracticeScreen(){
+fun KotlinPracticeScreen(modifier: Modifier = Modifier){
+    //nullable by putting ? at the end
+    var textInput by rememberSaveable { mutableStateOf("") }
+    var animal: String? = textInput.ifBlank { null } //if its blank then its null
+    var message ="No animal entered"
+    animal?.let {
+        when(animal.lowercase()){
+            "cat" -> message = "meow meow!"
+            "dog" -> message = "woof woof!"
+            "fish" -> message = "blub blub!"
+            else -> message = "I don't know that animal!"
+        }
+    }
 
+
+    Column{
+        TextField(
+            value = textInput,
+            onValueChange = {newText -> textInput = newText},
+            label = {Text("Enter an animal") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(text = message)
+    }
 }
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Individual2Theme {
-        Row {
-            ColorCard(color =Color.White,
-                label= "green card",
-                Modifier
-                    .border(2.dp, Color.Black)
-                    .padding(4.dp)
-                    .background(Color.Green)
-                    .size(100.dp)
-            )
-            ColorCard(color =Color.White,
-                label= "red card",
-                Modifier
-                    .padding(4.dp)
-                    .border(2.dp, Color.Black)
-                    .background(Color.Red)
-                    .size(100.dp)
-            )
-            ColorCard(color =Color.Black,
-                label= "Yellow card",
-                Modifier
-                    .size(100.dp)
-                    .background(Color.Yellow)
-                    .border(2.dp, Color.Black)
-                    .padding(20.dp)
-
-            )
-        }
-
-
+        KotlinPracticeScreen()
     }
 }
