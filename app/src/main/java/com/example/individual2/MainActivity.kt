@@ -109,12 +109,12 @@ fun ToggleCard (modifier: Modifier = Modifier){
 
 @Composable
 fun KotlinPracticeScreen(modifier: Modifier = Modifier){
-    //nullable by putting ? at the end
     var textInput by rememberSaveable { mutableStateOf("") }
-    var animal: String? = textInput.ifBlank { null } //if its blank then its null
-    var message ="No animal entered"
-    animal?.let {
-        when(animal.lowercase()){
+    var animal: String? = textInput.ifBlank { null } //if its blank then its null, add ? to make it nullable
+    var message ="No animal entered" //variable to hold message, default message
+
+    animal?.let { // if it is not null
+        when(animal.lowercase()){ //switch statement to change message based on input
             "cat" -> message = "meow meow!"
             "dog" -> message = "woof woof!"
             "fish" -> message = "blub blub!"
