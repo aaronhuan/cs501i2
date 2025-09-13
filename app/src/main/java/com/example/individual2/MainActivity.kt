@@ -11,13 +11,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -108,28 +107,38 @@ fun ToggleCard (modifier: Modifier = Modifier){
 }
 
 @Composable
-fun KotlinPracticeScreen(modifier: Modifier = Modifier){
-    var textInput by rememberSaveable { mutableStateOf("") }
-    var animal: String? = textInput.ifBlank { null } //if its blank then its null, add ? to make it nullable
+fun KotlinPracticeScreen(){
+    var buttonInput by rememberSaveable { mutableStateOf<String?>( null) }
     var message ="No animal entered" //variable to hold message, default message
 
-    animal?.let { // if it is not null
-        when(animal.lowercase()){ //switch statement to change message based on input
-            "cat" -> message = "meow meow!"
-            "dog" -> message = "woof woof!"
-            "fish" -> message = "blub blub!"
-            else -> message = "I don't know that animal!"
+    buttonInput?.let{
+        message = when(buttonInput){
+            "cat" -> "meow meow!"
+            "dog" -> "woof woof!"
+            "fish" -> "blub blub!"
+            else -> "I don't know that animal!"
         }
     }
 
 
     Column{
-        TextField(
-            value = textInput,
-            onValueChange = {newText -> textInput = newText},
-            label = {Text("Enter an animal") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Row{
+            Button(onClick = { buttonInput = null }) {
+                Text(text= "null")
+            }
+            Button(onClick = { buttonInput = "cat" }) {
+                Text(text= "cat")
+            }
+            Button(onClick = { buttonInput = "dog" }) {
+                Text(text= "dog")
+            }
+            Button(onClick = { buttonInput = "fish" }) {
+                Text(text= "fish")
+            }
+            Button(onClick = { buttonInput = "elephant" }) {
+                Text(text= "elephant")
+            }
+        }
         Text(text = message)
     }
 }
